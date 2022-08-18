@@ -1,0 +1,20 @@
+[project]
+name = "beancount-china-income-tax"
+version = "0.1.0"
+description = "A beancount plugin to calculate and validate china personal income tax"
+authors = [
+    {name = "Chao Chen", email = "wenbushi@gmail.com"},
+]
+dependencies = [
+    "beancount>=2.3.5",
+]
+requires-python = ">=3.7"
+readme = "readme.md"
+license = {text = "GPL-2.0"}
+
+[build-system]
+requires = ["pdm-pep517>=1.0.0"]
+build-backend = "pdm.pep517.api"
+
+[tool]
+[tool.pdm]

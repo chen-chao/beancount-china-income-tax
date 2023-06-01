@@ -1,6 +1,8 @@
 __pycache__/
 __pypackages__/
 dist/
+build/
+*.egg-info/
 
 *.lock
 

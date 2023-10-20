@@ -1,6 +1,6 @@
 [project]
 name = "beancount-china-income-tax"
-version = "0.1.1"
+version = "0.1.2"
 description = "A beancount plugin to calculate and validate china personal income tax"
 authors = [
     {name = "Chao Chen", email = "wenbushi@gmail.com"},

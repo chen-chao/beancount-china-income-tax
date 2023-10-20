@@ -30,11 +30,10 @@
 ## 使用方法
 
 beancount 插件的工作流程和使用方法可参考 [Beancount Scripting & Plugins](https://beancount.github.io/docs/beancount_scripting_plugins.html).
-最简单的方法是 clone 本项目至 `beancount_data_folder/scripts/`, 然后指定
+最简单的方法是 `pip install beancount-china-income-tax`, 然后在 beanount 里指定
 
 ```
-option "insert_pythonpath" "True"
-plugin "scripts.beancount-china-income-tax.china_income_tax" "category=china-income-tax,account=Expenses:IncomeTax"
+plugin "beancount-china-income-tax.china_income_tax" "category=china-income-tax,account=Expenses:IncomeTax"
 ```
 
 在参与所得税计算的 beancount 账户和 transaction 下指定

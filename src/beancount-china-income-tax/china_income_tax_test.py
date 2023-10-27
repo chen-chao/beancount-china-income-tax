@@ -6,7 +6,7 @@ from beancount import loader
 from beancount.core.number import ZERO, D
 from beancount.parser import printer
 
-from china_income_tax import calc_tax, ChinaIncomeTaxError
+from beancount_china_income_tax.china_income_tax import calc_tax, ChinaIncomeTaxError
 
 class ChinaIncomeTaxUnitTest(unittest.TestCase):
     def test_calc_tax(self):

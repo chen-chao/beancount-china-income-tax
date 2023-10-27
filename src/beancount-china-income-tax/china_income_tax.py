@@ -26,7 +26,7 @@ TAX_TABLE = [
 
 # constants
 DEFAULT_MONTHLY_DEDUCTION = D(-5000)
-DEFAULT_PRECISE = '0.01'
+DEFAULT_PRECISION = '0.01'
 TAX_DEDUCTION = 'tax-deduction'
 
 def china_income_tax(entries, options_map, config):
@@ -41,7 +41,7 @@ def china_income_tax(entries, options_map, config):
     category = config['category']
     tax_account = config['account']
     monthly_deduction = config.get('monthly-deduction', DEFAULT_MONTHLY_DEDUCTION)
-    precise = D(config.get('precise', DEFAULT_PRECISE))
+    precision = D(config.get('precision', DEFAULT_PRECISION))
 
     # process beancount threads
     for e in entries:
@@ -76,7 +76,7 @@ def china_income_tax(entries, options_map, config):
         acc_income[year] = acc_current
         acc_tax[year] += tax
 
-        if (tax_calculated.quantize(precise) != tax.quantize(precise)):
+        if (tax_calculated.quantize(precision) != tax.quantize(precision)):
             errors.append(
                 ChinaIncomeTaxError(
                     t.meta,
@@ -106,5 +106,5 @@ def calc_tax(amount):
         if amount < t.level:
             return amount * t.rate - t.deduction
 
-    raise InvalidArgumentException(
+    raise ValueError(
         f'calc_tax: invalid tax rate for {amount}. should not reach here')

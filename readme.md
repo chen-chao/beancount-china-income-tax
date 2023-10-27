@@ -77,5 +77,5 @@ income tax does not match, calculated: 1005.00, actual: 410.41
 | category          | plugin/transaction option | 指定参与本插件计算的账户和 transaction    | 是        | category=china-income-tax  |
 | account           | plugin option             | 税款账户前缀                              | 是        | account=Expenses:IncomeTax |
 | monthly-deduction | plugin option             | 每月的修正额度, 默认为 -5000, 正数为增加  | 否        | monthly-deduction=-5000    |
-| precise           | plugin option             | 税款账户比较精度, 默认为 0.01             | 否        | precise=0.01               |
+| precision           | plugin option             | 税款账户比较精度, 默认为 0.01             | 否        | precision=0.01               |
 | tax-deduction     | transaction option        | 指定 transaction 的税款计算修正, 默认为 0 | 否        | tax-deduction: -1100       |

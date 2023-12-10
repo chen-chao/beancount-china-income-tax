@@ -84,7 +84,7 @@ class ChinaIncomeTaxUnitTest(unittest.TestCase):
 
         2022-01-31 * "salary"
           category: "china-income-tax"
-          tax-deduction: -1000
+          tax-deduction: "-1000"
           Income:Allowance                          -500 CNY
           Income:Salary                           -40000 CNY
           Expenses:Pension                          1000 CNY
@@ -127,7 +127,7 @@ class ChinaIncomeTaxUnitTest(unittest.TestCase):
 
         2022-01-31 * "salary"
           category: "china-income-tax"
-          tax-deduction: -1000
+          tax-deduction: "-1000"
           Income:Allowance                          -500 CNY
           Income:Salary                           -40000 CNY
           Expenses:Pension                          1000 CNY

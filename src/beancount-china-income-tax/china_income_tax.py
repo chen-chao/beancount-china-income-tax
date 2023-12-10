@@ -61,7 +61,7 @@ def china_income_tax(entries, options_map, config):
         year = t.date.year
         month = t.date.month
 
-        deduction = monthly_deduction + t.meta.get(TAX_DEDUCTION, ZERO)
+        deduction = monthly_deduction + D(t.meta.get(TAX_DEDUCTION, 0))
         income = ZERO
         tax = ZERO
         for p in t.postings:

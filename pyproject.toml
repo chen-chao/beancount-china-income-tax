@@ -1,12 +1,12 @@
 [project]
 name = "beancount-china-income-tax"
-version = "0.1.2"
+version = "0.1.3"
 description = "A beancount plugin to calculate and validate china personal income tax"
 authors = [
     {name = "Chao Chen", email = "wenbushi@gmail.com"},
 ]
 dependencies = [
-    "beancount>=2.3.5",
+    "beancount>=2.3.6",
 ]
 requires-python = ">=3.9"
 readme = "readme.md"

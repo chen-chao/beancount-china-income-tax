@@ -1,0 +1,31 @@
+trigger:
+  - master
+
+resources:
+  - repo: self
+
+stages:
+  - stage: Build
+    jobs:
+      - job: Build
+        displayName: 'Build python package'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+        - script: |
+            pip install build
+            pip install twine
+          displayName: 'Install build and twine'
+
+        - script: |
+            python -m build -w
+          displayName: 'Python build'
+
+        - task: TwineAuthenticate@1
+          inputs:
+            artifactFeed: $(System.TeamProject)/$(Feed)
+          displayName: 'Twine Authenticate'
+
+        - script: |
+            python -m twine upload -r $(Feed) --config-file $(PYPIRC_PATH) dist/*.whl
+          displayName: 'Upload to feed'

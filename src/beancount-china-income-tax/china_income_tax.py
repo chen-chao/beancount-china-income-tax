@@ -56,13 +56,12 @@ def china_income_tax(entries, options_map, config):
                 taxable_transactions.append(e)
 
     # yearly accumulated tax calculation
-    acc_income = defaultdict(lambda: ZERO)
-    acc_tax = defaultdict(lambda: ZERO)
+    cum_income = defaultdict(lambda: ZERO)
+    cum_tax_paid = defaultdict(lambda: ZERO)
 
     # transactions are guaranteed sorted
     for t in taxable_transactions:
         year = t.date.year
-        month = t.date.month
 
         deduction = monthly_deduction + D(t.meta.get(TAX_DEDUCTION, 0))
         income = ZERO
@@ -76,24 +75,30 @@ def china_income_tax(entries, options_map, config):
             if p.account.startswith(tax_account):
                 tax += p.units.number
 
-        acc_current = acc_income[year] + (deduction - income)
-        tax_calculated = calc_tax(acc_current) - acc_tax[year]
-        acc_income[year] = acc_current
-        acc_tax[year] += tax
+        cur_taxable_income = deduction - income
+        cum_taxable_income = cum_income[year] + cur_taxable_income
+        cum_tax_payable = calc_tax(cum_taxable_income)
+        tax_expected = cum_tax_payable - cum_tax_paid[year]
 
-        if tax_calculated.quantize(precision) != tax.quantize(precision):
+        cum_income[year] = cum_taxable_income
+        cum_tax_paid[year] += tax
+
+        if tax_expected.quantize(precision) != tax.quantize(precision):
+            tax_level = get_tax_level(cum_taxable_income)
             errors.append(
                 ChinaIncomeTaxError(
                     t.meta,
                     (
-                        f"Income tax does not match. "
-                        f"Calculated: {tax_calculated:.2f}, "
-                        f"Actual: {tax:.2f}; \n\n"
-                        f"Diagnostics:\n"
-                        f"Accumulated income: {acc_current:.2f}, "
-                        f"Accumulated tax: {acc_tax[year]:.2f}, "
-                        f"Current income: {income:.2f} ({', '.join(taxed_accounts)}), "
-                        f"Deduction: {deduction:.2f}"
+                        f"Income tax does not match. Diagnostics:\n"
+                        f"Cumulative taxable income: {cum_taxable_income:.2f}, \n"
+                        f"Current income: {income:.2f} ({', '.join(taxed_accounts)}), \n"
+                        f"Current taxable income: {cur_taxable_income:.2f} (deduction: {deduction: .2f}), \n"
+                        f"Tax rate: {tax_level.rate}\n"
+                        f"Tax quick deduction: {tax_level.deduction}\n"
+                        f"Cumulative tax payable: {cum_tax_payable:.2f}, "
+                        f"Cumulative tax paid: {cum_tax_paid[year]:.2f}, "
+                        f"Tax (Expected): {tax_expected:.2f}, \n"
+                        f"Tax (Actual): {tax: .2f}"
                     ),
                     t,
                 )
@@ -112,16 +117,15 @@ def get_config(config):
 
     return d
 
-
-def calc_tax(amount):
-    """calculat tax according to the table"""
-    if amount <= 0:
-        return ZERO
+def get_tax_level(amount) -> TAX_ROW:
+    """get tax level according to the amount"""
+    assert amount >= 0, "amount should be non-negative"
 
     for t in TAX_TABLE:
         if amount < t.level:
-            return amount * t.rate - t.deduction
+            return t
 
-    raise ValueError(
-        f"calc_tax: invalid tax rate for {amount}. should not reach here"
-    )
+def calc_tax(amount) -> Decimal:
+    """calculat tax according to the table"""
+    tax_level = get_tax_level(amount)
+    return amount * tax_level.rate - tax_level.deduction

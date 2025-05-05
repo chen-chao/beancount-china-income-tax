@@ -1,9 +1,19 @@
 name: release
-run-name: Release beancount-cc-importer to PyPI
+run-name: Release beancount-china-income-tax to PyPI
 on:
   push:
-    tags:
-      - v*
+    branches:
+      - master
+    paths:
+      - pyproject.toml
+
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for release'
+        required: false
+        default: 'Manual release'
+
 jobs:
   pypi-publish:
     name: upload release to PyPI

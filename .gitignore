@@ -1,0 +1,9 @@
+__pycache__/
+__pypackages__/
+dist/
+
+*.lock
+
+.*
+*~
+*#

@@ -4,7 +4,7 @@
 
 ## 税表和扣除项目
 
-根据
+插件所使用税表来自
 [中华人民共和国个人所得税法](http://www.chinatax.gov.cn/chinatax/n810219/n810744/n3752930/n3752974/c3970366/content.html)
 所附
 [附件1：个人所得税税率表（综合所得适用）.pdf](http://www.chinatax.gov.cn/chinatax/n363/c5161493/5161493/files/%E9%99%84%E4%BB%B61%EF%BC%9A%E4%B8%AA%E4%BA%BA%E6%89%80%E5%BE%97%E7%A8%8E%E7%A8%8E%E7%8E%87%E8%A1%A8%EF%BC%88%E7%BB%BC%E5%90%88%E6%89%80%E5%BE%97%E9%80%82%E7%94%A8%EF%BC%89.pdf)
@@ -24,7 +24,7 @@
 [2006第07期-基本养老保险, 基本医疗保险费, 失业保险费, 住房公积金免征个人所得税](http://www.chinatax.gov.cn/n810341/n810765/n812183/n812846/c1197169/content.html)
 及
 [个人所得税专项附加扣除暂行办法](http://www.chinatax.gov.cn/chinatax/n810219/n810744/n3752930/n3752974/c3963375/content.html),
-纳税人享有相应扣除项目, 可在本插件中指定扣除账户或扣除额度.
+纳税人可享有相应扣除项目, 可在本插件中指定扣除账户或扣除额度.
 
 
 ## 使用方法
@@ -34,10 +34,11 @@ beancount 插件的工作流程和使用方法可参考 [Beancount Scripting & P
 
 ```
 option "insert_pythonpath" "True"
-plugin "scripts.beancount-china-income-tax" "category=china-income-tax,account=Expenses:IncomeTax"
+plugin "scripts.beancount-china-income-tax.china_income_tax" "category=china-income-tax,account=Expenses:IncomeTax"
 ```
 
-在参与所得税计算的 beancount 账户和 transaction 下指定 `category=china-income-tax`, 如:
+在参与所得税计算的 beancount 账户和 transaction 下指定
+`category:china-income-tax`, 如:
 
 ```
 1970-01-01 open Income:Salary
@@ -48,12 +49,13 @@ plugin "scripts.beancount-china-income-tax" "category=china-income-tax,account=E
   category: "china-income-tax"
 ```
 
-可在 transaction thread 下用 deduction 修正税款计算, 如下面的示例中 deduction = -3300. 负数为扣除, 正数为增加.
+可在 transaction thread 下用 tax-deduction 修正税款计算, 如下面的示例
+中 `tax-deduction: -3300`. 负数为扣除, 正数为增加 (如有未记录的额外收益时).
 
 ```
 2022-01-31 * "salary"
   category: "china-income-tax"
-  deduction: -3300
+  tax-deduction: -3300
   Income:Allowance                          -500 CNY
   Income:Salary                           -40000 CNY
   Expenses:Pension                          1000 CNY
